@@ -9,17 +9,19 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { inherits } = require("util");
+const team = [];
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-function askQuestions(){
-    inquirer.prompt([
+const employeeQuestions = [
+    
       {
           type: "input",
           message: "What is your name?",
-          name: "quest1",
+          name: "name",
       },
       {
           type: "input",
@@ -30,17 +32,57 @@ function askQuestions(){
           type: "input",
           message: "What is your email address?",
           name: "email",
-      },  
-    ])
+      },
+    
+    ];
+
+
+function getEngineer(){
+    const engineerQuestions = [
+        {
+            type: "input",
+            message: "What is your github name?",
+            name: "github",
+        }
+    ]
+    inquirer.prompt(employeeQuestions.concat(engineerQuestions)).then(response =>{
+        let newEngineer = new Engineer(response.name, response.id, response.email, response.github)
+        team.push(newEngineer);
+        console.log(team);
+        init();
+    })
 }
 
 
+function init(){
+    inquirer.prompt([  {
+        
+        type: "list",
+        message: "What type of employee would you like to add?",
+        choices: ["Engineer", "Intern", "Manager", "no employee"],
+        name: "role"
+    }])
+    .then(response => {
+        console.log(response)
+        const employeeChoice = response.role
+        if(employeeChoice === "Engineer"){
+            getEngineer()
+        }
+        else  if(employeeChoice === "Intern"){
+            getIntern()
+        }
+        else  if(employeeChoice === "Manager"){
+            getManager()
+        }
+        else {
+            console.log(team)
+            //write file to render function
+        }
+    })
+    
+}
 
-
-
-
-
-
+init();
 
 
 
