@@ -53,6 +53,38 @@ function getEngineer(){
     })
 }
 
+function getIntern(){
+    const internQuestions = [
+        {
+            type: "input",
+            message: "What is the name of your school?",
+            name: "github",
+        }
+    ]
+    inquirer.prompt(employeeQuestions.concat(internQuestions)).then(response =>{
+        let newIntern= new Intern(response.name, response.id, response.email, response.github)
+        team.push(newIntern);
+        console.log(team);
+        init();
+    })
+}
+
+function getManager(){
+    const managerQuestions = [
+        {
+            type: "input",
+            message: "What is your github name?",
+            name: "github",
+        }
+    ]
+    inquirer.prompt(employeeQuestions.concat(managerQuestions)).then(response =>{
+        let newManager = new Manager(response.name, response.id, response.email, response.github)
+        team.push(newManager);
+        console.log(team);
+        init();
+    })
+}
+
 
 function init(){
     inquirer.prompt([  {
