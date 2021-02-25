@@ -9,8 +9,9 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const { inherits } = require("util");
+//const { inherits } = require("util");
 const team = [];
+//const buildTeam = [];
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -49,7 +50,7 @@ function getEngineer(){
         let newEngineer = new Engineer(response.name, response.id, response.email, response.github)
         team.push(newEngineer);
         console.log(team);
-        init();
+        getTeam();
     })
 }
 
@@ -58,40 +59,26 @@ function getIntern(){
         {
             type: "input",
             message: "What is the name of your school?",
-            name: "github",
+            name: "school",
         }
     ]
     inquirer.prompt(employeeQuestions.concat(internQuestions)).then(response =>{
-        let newIntern= new Intern(response.name, response.id, response.email, response.github)
+        let newIntern= new Intern(response.name, response.id, response.email, response.school)
         team.push(newIntern);
         console.log(team);
-        init();
-    })
-}
-
-function getManager(){
-    const managerQuestions = [
-        {
-            type: "input",
-            message: "What is your github name?",
-            name: "github",
-        }
-    ]
-    inquirer.prompt(employeeQuestions.concat(managerQuestions)).then(response =>{
-        let newManager = new Manager(response.name, response.id, response.email, response.github)
-        team.push(newManager);
-        console.log(team);
-        init();
+        getTeam();
     })
 }
 
 
-function init(){
+
+
+function getTeam(){
     inquirer.prompt([  {
         
         type: "list",
         message: "What type of employee would you like to add?",
-        choices: ["Engineer", "Intern", "Manager", "no employee"],
+        choices: ["Engineer", "Intern", "no employee"],
         name: "role"
     }])
     .then(response => {
@@ -103,16 +90,49 @@ function init(){
         else  if(employeeChoice === "Intern"){
             getIntern()
         }
-        else  if(employeeChoice === "Manager"){
-            getManager()
-        }
+
         else {
             console.log(team)
-            //write file to render function
+            //write file to render function 
+            writeHTML();
         }
-    })
+        
+    });
+   
+
+    const writeHTML = () => {
+        fs.writeFile(outputPath, render(team), (err) =>
+        err ? console.error(err) : console.log ("File Written!")
+        );
+    };
+  
+   
+    // fs.writeFile(outputPath, render(team), err => {
+    //     if(err){
+    //         return err
+    //     }
+    //     console.log("File Written")
+    // });
     
 }
+function init(){
+    const managerQuestions = [
+        {
+            type: "input",
+            message: "What is your office number?",
+            name: "officeNumber",
+        }
+    ]
+    inquirer.prompt(employeeQuestions.concat(managerQuestions)).then(response =>{
+        let newManager = new Manager(response.name, response.id, response.email, response.officeNumber)
+        team.push(newManager);
+        console.log(team);
+        getTeam();
+    })
+}
+   
+
+
 
 init();
 
