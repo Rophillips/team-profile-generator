@@ -7,4 +7,4 @@ You will build a software engineering team generator command line application. T
 As a manager
 I want to generate a webpage that displays my team's basic info
 so that I have quick access to emails and GitHub profiles
-![image](https://user-images.githubusercontent.com/74886597/109343149-dd3b0100-783a-11eb-8612-dec08ad51921.png)
+![image](https://user-images.githubusercontent.com/74886597/109368948-c7443500-7868-11eb-9df7-67dbe2d9c928.png)
